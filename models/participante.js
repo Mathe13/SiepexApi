@@ -2,7 +2,6 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define('participante', {
-
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -40,7 +39,8 @@ module.exports = function (sequelize, DataTypes) {
     },
     possui_necessidade_especial: {
       type: DataTypes.STRING(45),
-      allowNull: true
+      allowNull: true,
+      defaultValue: 'Não'
     },
     categoria: {
       type: DataTypes.STRING(45),
@@ -101,10 +101,13 @@ module.exports = function (sequelize, DataTypes) {
     id_trab2: {
       type: DataTypes.STRING(45),
       allowNull: true
+    },
+    senha: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+      defaultValue: '123'
     }
   }, {
-    tableName: 'participante',
-    timestamps: false,
-
+    tableName: 'participante'
   });
 };

@@ -33,6 +33,31 @@ router.get('/:id', (req, res) => {
         res.json(String(err))
     });
 }); //Buscar
+router.get('/:cpf/login', (req, res) => {
+    var senha = req.query.senha;
+    participante.findOne({
+        where: {
+            "cpf": req.params.cpf
+        }
+    }).then((result) => {
+        if (result) {
+
+            if (senha == result.senha) {
+                res.json(result)
+            } else {
+                res.send({
+                    "erro": "Falha nas credenciais"
+                })
+            }
+        } else {
+            res.send({
+                "erro": "Usuario não existente"
+            })
+        }
+    }).catch((err) => {
+        res.json(String(err))
+    });
+}); //Logar
 router.put('/:id', (req, res) => {
     participante.update(req.body, {
             where: {
