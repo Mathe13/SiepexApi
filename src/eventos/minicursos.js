@@ -5,7 +5,12 @@ const {
 } = require('../../models');
 
 router.get('/', (req, res) => {
-    tbl_minicursos.findAll().then((result) => {
+    tbl_minicursos.findAll({
+        order: [
+            ['inicio', 'ASC'],
+            // ['id', 'ASC'],
+        ],
+    }).then((result) => {
         res.json(result)
     }).catch((err) => {
         res.json(String(err))

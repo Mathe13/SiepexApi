@@ -22,7 +22,9 @@ tbl_locais_visitas.belongsTo(tbl_visitas, {
     targetKey: 'id_visitas'
 });
 router.get('/', (req, res) => {
-    tbl_visitas.findAll().then((result) => {
+    tbl_visitas.findAll({
+        include: [tbl_contato_visitas, tbl_locais_visitas]
+    }).then((result) => {
         res.json(result)
     }).catch((err) => {
         res.json(String(err))
