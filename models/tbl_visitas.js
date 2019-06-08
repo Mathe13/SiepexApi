@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('tbl_visitas', {
     id_visitas: {
       type: DataTypes.INTEGER(11),
@@ -29,13 +29,6 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'tbl_visitas',
-    // classMethods: {
-    //   associate: function (models) {
-    //     models.tbl_visitas.hasMany(models.tbl_contato_visitas, {
-    //       foreignKey: 'id_visitas',
-    //     });
-    //   }
-    // }
+    tableName: 'tbl_visitas'
   });
 };

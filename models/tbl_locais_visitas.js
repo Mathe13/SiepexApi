@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('tbl_locais_visitas', {
     id: {
       type: DataTypes.INTEGER(11),
@@ -33,14 +33,6 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'tbl_locais_visitas',
-    // classMethods: {
-    //   associate: function (models) {
-    //     models.tbl_contato_visitas.belongsTo(models.tbl_visitas, {
-    //       foreignKey: 'id_visitas',
-    //       targetKey: 'id_visitas'
-    //     });
-    //   }
-    // }
+    tableName: 'tbl_locais_visitas'
   });
 };

@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('participante', {
     id: {
       type: DataTypes.INTEGER(11),
@@ -70,7 +70,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(140),
       allowNull: true
     },
-    utiliza_alimentação_uergs: {
+    utiliza_alimentacao_uergs: {
       type: DataTypes.STRING(45),
       allowNull: true
     },
@@ -90,7 +90,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(45),
       allowNull: true
     },
-    instituição_ensino: {
+    instituicao_ensino: {
       type: DataTypes.STRING(70),
       allowNull: true
     },
