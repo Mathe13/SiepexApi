@@ -8,7 +8,6 @@ router.get('/', (req, res) => {
     tbl_minicursos.findAll({
         order: [
             ['inicio', 'ASC'],
-            // ['id', 'ASC'],
         ],
     }).then((result) => {
         res.json(result)

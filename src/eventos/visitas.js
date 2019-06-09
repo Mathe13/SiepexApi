@@ -23,7 +23,10 @@ tbl_locais_visitas.belongsTo(tbl_visitas, {
 });
 router.get('/', (req, res) => {
     tbl_visitas.findAll({
-        include: [tbl_contato_visitas, tbl_locais_visitas]
+        include: [tbl_contato_visitas, tbl_locais_visitas],
+        order: [
+            ['saida', 'ASC'],
+        ],
     }).then((result) => {
         res.json(result)
     }).catch((err) => {
