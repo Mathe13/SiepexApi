@@ -12,9 +12,6 @@ participante.belongsToMany(tbl_visitas, {
     through: {
         model: cadastro_visita,
         unique: false,
-        // scope: {
-        //     taggable: 'post'
-        // }
     },
     foreignKey: 'id_participante',
     constraints: false
@@ -23,9 +20,6 @@ tbl_visitas.belongsToMany(participante, {
     through: {
         model: cadastro_visita,
         unique: false,
-        // scope: {
-        //     taggable: 'post'
-        // }
     },
     foreignKey: 'id_visita',
     constraints: false
@@ -69,7 +63,7 @@ router.put('/:id/cadastrar', (req, res) => {
                 order: ['retorno', 'DESC']
             }]
         }).then((participante) => {
-            if (participante['tbl_visitas'].length == 0 || visita['saida'] > participante['tbl_visitas'][0]['retorno']) {
+            if (participante['tbl_visitas'].length == 0 || visita['retorno'] < participante['tbl_visitas'][0]['saida']) {
                 // res.json(visita);
                 cadastro_visita.findOrCreate({
                     where: {
