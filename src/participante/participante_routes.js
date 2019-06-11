@@ -3,8 +3,63 @@ const
     express = require('express'),
     router = express.Router();
 const {
-    participante
+    participante,
+    tbl_minicursos,
+    cadastro_minicurso,
+    tbl_visitas,
+    cadastro_visita,
+    tbl_contato_visitas,
+    tbl_locais_visitas
 } = require('../../models');
+tbl_visitas.hasMany(tbl_contato_visitas, {
+    foreignKey: 'id_visitas',
+});
+tbl_visitas.hasMany(tbl_contato_visitas, {
+    foreignKey: 'id_visitas',
+});
+tbl_contato_visitas.belongsTo(tbl_visitas, {
+    foreignKey: 'id_visitas',
+    targetKey: 'id_visitas'
+});
+tbl_visitas.hasMany(tbl_locais_visitas, {
+    foreignKey: 'id_visitas',
+});
+tbl_locais_visitas.belongsTo(tbl_visitas, {
+    foreignKey: 'id_visitas',
+    targetKey: 'id_visitas'
+});
+participante.belongsToMany(tbl_visitas, {
+    through: {
+        model: cadastro_visita,
+        unique: false,
+    },
+    foreignKey: 'id_participante',
+    constraints: false
+});
+tbl_visitas.belongsToMany(participante, {
+    through: {
+        model: cadastro_visita,
+        unique: false,
+    },
+    foreignKey: 'id_visita',
+    constraints: false
+});
+participante.belongsToMany(tbl_minicursos, {
+    through: {
+        model: cadastro_minicurso,
+        unique: false,
+    },
+    foreignKey: 'id_participante',
+    constraints: false
+});
+tbl_minicursos.belongsToMany(participante, {
+    through: {
+        model: cadastro_minicurso,
+        unique: false,
+    },
+    foreignKey: 'id_minicurso',
+    constraints: false
+});
 router.get('/', (req, res) => {
     participante.findAll().then((result) => {
         res.json(result)
@@ -33,6 +88,29 @@ router.get('/:id', (req, res) => {
         res.json(String(err))
     });
 }); //Buscar
+router.get('/:id/minicursos', (req, res) => {
+    participante.findByPk(req.params.id, {
+        attributes: [],
+        include: [tbl_minicursos]
+    }).then((result) => {
+        res.json(result)
+    }).catch((err) => {
+        res.json(String(err))
+    });
+});
+router.get('/:id/visitas', (req, res) => {
+    participante.findByPk(req.params.id, {
+        attributes: [],
+        include: [{
+            model: tbl_visitas,
+            include: [tbl_contato_visitas, tbl_locais_visitas, participante]
+        }],
+    }).then((result) => {
+        res.json(result)
+    }).catch((err) => {
+        res.json(String(err))
+    });
+});
 router.get('/:cpf/login', (req, res) => {
     var senha = req.query.senha;
     participante.findOne({
