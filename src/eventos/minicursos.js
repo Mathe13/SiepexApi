@@ -41,11 +41,11 @@ router.get('/:id', (req, res) => {
         res.json(String(err))
     });
 });
-router.delete("/:id/liberar", (req, res) => {
+router.delete("/:id/liberar/:id_participante", (req, res) => {
     cadastro_minicurso.destroy({
         where: {
             id_minicurso: req.params.id,
-            id_participante: req.body.id_participante
+            id_participante: req.params.id_participante
         }
     }).then(function (rowDeleted) { // rowDeleted will return number of rows deleted
         if (rowDeleted === 1) {

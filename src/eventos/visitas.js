@@ -53,11 +53,11 @@ router.get('/', (req, res) => {
         res.json(String(err))
     });
 }); //Listar todos
-router.delete("/:id/liberar", (req, res) => {
+router.delete("/:id/liberar/:id_participante", (req, res) => {
     cadastro_visita.destroy({
         where: {
             id_visita: req.params.id,
-            id_participante: req.body.id_participante
+            id_participante: req.params.id_participante
         }
     }).then(function (rowDeleted) { // rowDeleted will return number of rows deleted
         if (rowDeleted === 1) {
