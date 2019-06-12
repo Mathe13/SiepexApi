@@ -103,7 +103,7 @@ router.get('/:id/visitas', (req, res) => {
         attributes: [],
         include: [{
             model: tbl_visitas,
-            include: [tbl_contato_visitas, tbl_locais_visitas, participante]
+            include: [tbl_contato_visitas, tbl_locais_visitas]
         }],
     }).then((result) => {
         res.json(result)

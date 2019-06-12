@@ -41,9 +41,49 @@ router.get('/:id', (req, res) => {
         res.json(String(err))
     });
 });
+router.delete("/:id/liberar", (req, res) => {
+    cadastro_minicurso.destroy({
+        where: {
+            id_minicurso: req.params.id,
+            id_participante: req.body.id_participante
+        }
+    }).then(function (rowDeleted) { // rowDeleted will return number of rows deleted
+        if (rowDeleted === 1) {
+            console.log('Deleted successfully');
+            tbl_minicursos.findByPk(req.params.id).then((minicurso) => {
+                tbl_minicursos.update({
+                    "vagas": minicurso.vagas + 1
+                }, {
+                    where: {
+                        'id': req.params.id
+                    }
+                }).then(() => {
+                    res.json({
+                        status: "sucesso"
+                    })
+                })
+            })
+        } else {
+            res.json({
+                status: "sucesso, nada mudou"
+            })
+        }
+    }, function (err) {
+        console.log(err);
+        res.json({
+            status: "falha"
+        })
+    });
+})
 router.put('/:id/cadastrar', (req, res) => {
     tbl_minicursos.findByPk(req.params.id).then((minicurso) => {
         console.log(minicurso);
+        if (minicurso.vagas < 1) {
+            res.json({
+                status: "falha, vagas esgotadas"
+            })
+            return;
+        }
         participante.findByPk(req.body.id_participante, {
             include: [{
                 model: tbl_minicursos,
@@ -62,11 +102,20 @@ router.put('/:id/cadastrar', (req, res) => {
                         id_participante: participante['id']
                     }
                 }).then(() => {
-                    res.json({
-                        status: "sucesso"
+                    minicurso.update({
+                        "vagas": minicurso.vagas - 1
+                    }, {
+                        where: {
+                            'id': minicurso.id
+                        }
+                    }).then(() => {
+                        res.json({
+                            status: "sucesso"
+                        })
                     })
                 })
             } else {
+                console.log("ocupado");
                 res.json({
                     status: "falha, já ocupado"
                 })

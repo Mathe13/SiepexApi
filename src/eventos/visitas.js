@@ -53,7 +53,30 @@ router.get('/', (req, res) => {
         res.json(String(err))
     });
 }); //Listar todos
-
+router.delete("/:id/liberar", (req, res) => {
+    cadastro_visita.destroy({
+        where: {
+            id_visita: req.params.id,
+            id_participante: req.body.id_participante
+        }
+    }).then(function (rowDeleted) { // rowDeleted will return number of rows deleted
+        if (rowDeleted === 1) {
+            console.log('Deleted successfully');
+            res.json({
+                status: "sucesso"
+            })
+        } else {
+            res.json({
+                status: "sucesso, nada mudou"
+            })
+        }
+    }, function (err) {
+        console.log(err);
+        res.json({
+            status: "falha"
+        })
+    });
+})
 router.put('/:id/cadastrar', (req, res) => {
     tbl_visitas.findByPk(req.params.id).then((visita) => {
         console.log(visita);
