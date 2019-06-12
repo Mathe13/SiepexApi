@@ -34,7 +34,9 @@ router.get('/', (req, res) => {
 }); //Listar todos
 
 router.get('/:id', (req, res) => {
-    tbl_minicursos.findByPk(req.params.id).then((result) => {
+    tbl_minicursos.findByPk(req.params.id, {
+        include: [participante]
+    }).then((result) => {
         res.json(result)
     }).catch((err) => {
         console.log(err)
