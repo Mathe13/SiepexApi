@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     nome: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.STRING(60),
       allowNull: true
     },
     rg: {
@@ -43,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 'Não'
     },
     categoria: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.STRING(100),
       allowNull: true
     },
     unidade_ensino: {
@@ -79,7 +79,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     desc_necessidade_especial_alimentacao: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.STRING(140),
       allowNull: true
     },
     utiliza_alojamento_uergs: {

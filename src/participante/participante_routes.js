@@ -1,5 +1,4 @@
 const
-    bcrypt = require("bcrypt"),
     express = require('express'),
     router = express.Router();
 const {

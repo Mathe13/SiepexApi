@@ -9,11 +9,11 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true
     },
     titulo: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(200),
       allowNull: true
     },
     palestrante: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
       allowNull: true
     },
     inicio: {
@@ -26,18 +26,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     vagas: {
       type: DataTypes.INTEGER(11),
-      allowNull: true
+      allowNull: true,
+      defaultValue: '40'
     },
     predio: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(100),
       allowNull: true
     },
     sala: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(100),
       allowNull: true
     },
     obs: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(150),
       allowNull: true
     }
   }, {

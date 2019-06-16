@@ -1,19 +1,18 @@
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('cadastro_minicurso', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
-
     },
     id_minicurso: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
       references: {
-        model: 'cadastro_minicurso',
+        model: 'tbl_minicursos',
         key: 'id'
       }
     },
