@@ -70,11 +70,11 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     console.log(req.body)
     participante.findOrCreate({
-            where: {
-                cpf: req.body.cpf
-            },
-            defaults: req.body
-        })
+        where: {
+            cpf: req.body.cpf
+        },
+        defaults: req.body
+    })
         .then(([user, created]) => {
             res.json(user.get({
                 plain: true
@@ -138,15 +138,15 @@ router.get('/:cpf/login', (req, res) => {
 }); //Logar
 router.put('/:id', (req, res) => {
     participante.update(req.body, {
-            where: {
-                'id': req.params.id
-            }
-        })
+        where: {
+            'id': req.params.id
+        }
+    })
         .then(function (rowsUpdated) {
             res.json(rowsUpdated)
         })
         .catch((err) => {
-            res.json(String(err))
+            res.json({ "erro": String(err) })
         });
 
 }); //Editar
