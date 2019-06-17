@@ -4,9 +4,9 @@ const express = require('express'),
   participante_rotas = require("./src/participante/participante_routes.js"),
   visitas_rotas = require("./src/eventos/visitas.js"),
   minicursos_rotas = require("./src/eventos/minicursos.js"),
+  geral_rotas = require("./src/eventos/geral.js")
 
-
-  bodyParser = require('body-parser');
+bodyParser = require('body-parser');
 
 const app = express();
 
@@ -33,6 +33,7 @@ app.use(bodyParser.raw({
 app.use('/participante', participante_rotas);
 app.use('/visitas', visitas_rotas);
 app.use('/minicursos', minicursos_rotas);
+app.use('/geral', geral_rotas);
 app.get('/', function (req, res) {
   res.json("the server is on")
 })
