@@ -6,6 +6,7 @@ const express = require('express'),
   minicursos_rotas = require("./src/eventos/minicursos.js"),
   geral_rotas = require("./src/eventos/geral.js"),
   comissao_rotas = require("./src/comissao/comissao_routes"),
+  trabalhos_rotas = require("./src/eventos/trabalhos.js"),
   bodyParser = require('body-parser');
 
 const app = express();
@@ -35,6 +36,7 @@ app.use('/visitas', visitas_rotas);
 app.use('/minicursos', minicursos_rotas);
 app.use('/geral', geral_rotas);
 app.use('/comissao', comissao_rotas);
+app.use("/trabalhos", trabalhos_rotas);
 app.get('/', function (req, res) {
   res.json("the server is on")
 })
