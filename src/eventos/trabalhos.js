@@ -7,7 +7,7 @@ const {
 router.get('/', (req, res) => {
     tbl_trabalhos_aprovados.findAll({
         order: [
-            ['dia', 'ASC'], ['hora', 'ASC'],
+            ['hora', 'ASC'],
         ],
     }).then((result) => {
         res.json(result);
