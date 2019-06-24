@@ -78,6 +78,11 @@ router.delete("/:id/liberar/:id_participante", (req, res) => {
     });
 })
 router.put('/:id/cadastrar', (req, res) => {
+    if (req.params.id == 2) {
+        res.json({
+            status: "Inscrições encerradas"
+        });
+    }
     tbl_visitas.findByPk(req.params.id).then((visita) => {
         console.log(visita);
         participante.findByPk(req.body.id_participante, {
@@ -104,7 +109,7 @@ router.put('/:id/cadastrar', (req, res) => {
                 })
             } else {
                 res.json({
-                    status: "falha, já ocupado"
+                    status: "Parece que voce está ocupado"
                 })
             }
 
