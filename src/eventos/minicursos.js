@@ -56,14 +56,14 @@ router.delete("/:id/liberar/:id_participante", (req, res) => {
                 tbl_minicursos.update({
                     "vagas": minicurso.vagas + 1
                 }, {
-                    where: {
-                        'id': req.params.id
-                    }
-                }).then(() => {
-                    res.json({
-                        status: "sucesso"
+                        where: {
+                            'id': req.params.id
+                        }
+                    }).then(() => {
+                        res.json({
+                            status: "sucesso"
+                        })
                     })
-                })
             })
         } else {
             res.json({
@@ -78,6 +78,11 @@ router.delete("/:id/liberar/:id_participante", (req, res) => {
     });
 })
 router.put('/:id/cadastrar', (req, res) => {
+    //encerrado
+    res.json({
+        status: "Inscrições encerradas"
+    });
+    return;
     tbl_minicursos.findByPk(req.params.id).then((minicurso) => {
         console.log(minicurso);
         if (minicurso.vagas < 1) {
@@ -107,19 +112,19 @@ router.put('/:id/cadastrar', (req, res) => {
                     minicurso.update({
                         "vagas": minicurso.vagas - 1
                     }, {
-                        where: {
-                            'id': minicurso.id
-                        }
-                    }).then(() => {
-                        res.json({
-                            status: "sucesso"
+                            where: {
+                                'id': minicurso.id
+                            }
+                        }).then(() => {
+                            res.json({
+                                status: "sucesso"
+                            })
                         })
-                    })
                 })
             } else {
                 console.log("ocupado");
                 res.json({
-                    status: "falha, já ocupado"
+                    status: "Parece que você já está ocupado"
                 })
             }
 
