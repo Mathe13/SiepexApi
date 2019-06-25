@@ -43,6 +43,21 @@ router.get('/:id', (req, res) => {
         res.json(String(err))
     });
 });
+router.get('/:id/participantes', (req, res) => {
+    tbl_minicursos.findByPk(req.params.id, {
+        attributes: [],
+        include: [{
+            model: participante, attributes: ['nome', 'cpf'], through: {
+                attributes: []
+            }
+        }]
+    }).then((result) => {
+        res.json(result)
+    }).catch((err) => {
+        console.log(err)
+        res.json(String(err))
+    });
+});
 router.delete("/:id/liberar/:id_participante", (req, res) => {
     cadastro_minicurso.destroy({
         where: {
