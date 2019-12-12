@@ -3,7 +3,9 @@ const express = require('express'),
 const {
     tbl_minicursos,
     participante,
-    cadastro_minicurso
+    tbl_visitas,
+    cadastro_visita,
+    cadastro_minicurso,
 } = require('../../models');
 participante.belongsToMany(tbl_minicursos, {
     through: {
@@ -11,6 +13,22 @@ participante.belongsToMany(tbl_minicursos, {
         unique: false,
     },
     foreignKey: 'id_participante',
+    constraints: false
+});
+participante.belongsToMany(tbl_visitas, {
+    through: {
+        model: cadastro_visita,
+        unique: false,
+    },
+    foreignKey: 'id_participante',
+    constraints: false
+});
+tbl_visitas.belongsToMany(participante, {
+    through: {
+        model: cadastro_visita,
+        unique: false,
+    },
+    foreignKey: 'id_visita',
     constraints: false
 });
 tbl_minicursos.belongsToMany(participante, {
@@ -32,6 +50,17 @@ router.get('/', (req, res) => {
         res.json(String(err))
     });
 }); //Listar todos
+router.get('/', (req, res) => {
+    tbl_visitas.findAll({
+        order: [
+            ['saida', 'ASC'],
+        ],
+    }).then((result) => {
+        res.json(result)
+    }).catch((err) => {
+        res.json(String(err))
+    });
+}); //Listar todos/
 
 router.get('/:id', (req, res) => {
     tbl_minicursos.findByPk(req.params.id, {
@@ -43,8 +72,33 @@ router.get('/:id', (req, res) => {
         res.json(String(err))
     });
 });
+router.get('/:id', (req, res) => {
+    tbl_visitas.findByPk(req.params.id, {
+        include: [participante]
+    }).then((result) => {
+        res.json(result)
+    }).catch((err) => {
+        console.log(err)
+        res.json(String(err))
+    });
+});
 router.get('/:id/participantes', (req, res) => {
     tbl_minicursos.findByPk(req.params.id, {
+        attributes: [],
+        include: [{
+            model: participante, attributes: ['nome', 'cpf'], through: {
+                attributes: []
+            }
+        }]
+    }).then((result) => {
+        res.json(result)
+    }).catch((err) => {
+        console.log(err)
+        res.json(String(err))
+    });
+});
+router.get('/:id/participantes', (req, res) => {
+    tbl_visitas.findByPk(req.params.id, {
         attributes: [],
         include: [{
             model: participante, attributes: ['nome', 'cpf'], through: {
@@ -71,14 +125,14 @@ router.delete("/:id/liberar/:id_participante", (req, res) => {
                 tbl_minicursos.update({
                     "vagas": minicurso.vagas + 1
                 }, {
-                        where: {
-                            'id': req.params.id
-                        }
-                    }).then(() => {
-                        res.json({
-                            status: "sucesso"
-                        })
+                    where: {
+                        'id': req.params.id
+                    }
+                }).then(() => {
+                    res.json({
+                        status: "sucesso"
                     })
+                })
             })
         } else {
             res.json({
@@ -94,10 +148,7 @@ router.delete("/:id/liberar/:id_participante", (req, res) => {
 })
 router.put('/:id/cadastrar', (req, res) => {
     //encerrado
-    res.json({
-        status: "Inscrições encerradas"
-    });
-    return;
+    //return;
     tbl_minicursos.findByPk(req.params.id).then((minicurso) => {
         console.log(minicurso);
         if (minicurso.vagas < 1) {
@@ -110,40 +161,59 @@ router.put('/:id/cadastrar', (req, res) => {
             include: [{
                 model: tbl_minicursos,
                 order: ['fim', 'DESC']
+            },
+            {
+                model: tbl_visitas,
+                order: ['fim', 'DESC']
             }]
         }).then((participante) => {
-            if (participante['tbl_minicursos'].length == 0 || minicurso['fim'] < participante['tbl_minicursos'][0]['inicio']) {
-                // res.json(minicurso);
-                cadastro_minicurso.findOrCreate({
-                    where: {
-                        id_minicurso: minicurso['id'],
-                        id_participante: participante['id']
-                    },
-                    defaults: {
-                        id_minicurso: minicurso['id'],
-                        id_participante: participante['id']
-                    }
-                }).then(() => {
-                    minicurso.update({
-                        "vagas": minicurso.vagas - 1
-                    }, {
-                            where: {
-                                'id': minicurso.id
-                            }
-                        }).then(() => {
-                            res.json({
-                                status: "sucesso"
-                            })
+            if (participante['tbl_minicursos'].length != 0) {
+                for (var i = 0; i != participante['tbl_minicursos'].length; i++) {
+                    if (participante['tbl_minicursos'][i]['fim'] > minicurso['inicio']) {
+                        console.log("ocupado");
+                        res.json({
+                            status: "Parece que você já está ocupado"
                         })
-                })
-            } else {
-                console.log("ocupado");
-                res.json({
-                    status: "Parece que você já está ocupado"
-                })
+                        return false;
+                    }
+                }
+            }
+            if (participante['tbl_visitas'].length != 0) {
+                for (var i = 0; i != participante['tbl_visitas'].length; i++) {
+                    if (participante['tbl_visitas'][i]['retorno'] > minicurso['inicio']) {
+                        console.log("ocupado");
+                        res.json({
+                            status: "Parece que você já está ocupado"
+                        })
+                        return false;
+                    }
+                }
             }
 
-        })
+            cadastro_minicurso.findOrCreate({
+                where: {
+                    id_minicurso: minicurso['id'],
+                    id_participante: participante['id']
+                },
+                defaults: {
+                    id_minicurso: minicurso['id'],
+                    id_participante: participante['id']
+                }
+            }).then(() => {
+                minicurso.update({
+                    "vagas": minicurso.vagas - 1
+                }, {
+                    where: {
+                        'id': minicurso.id
+                    }
+                }).then(() => {
+                    res.json({
+                        status: "sucesso"
+                    })
+                })
+            })
+        }
+        )
     }).catch((err) => {
         console.log(err)
         res.json({
