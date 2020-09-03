@@ -1,50 +1,48 @@
 
 module.exports = function(sequelize, DataTypes){
-    return sequelize.define('equipes_juergs', {
+    return sequelize.define('jogos_juergs', {
         id :{
             type: DataTypes.INTEGER(2),
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
         },
-        id_modalidade:{
-            type: DataTypes.INTEGER(2),
-            allowNull: false,
-        },
-        nome_equipe:{
+        time_a :{
             type: DataTypes.STRING(30),
             allowNull: false,
         },
-        nome_modalidade:{
+        time_b :{
             type: DataTypes.STRING(30),
             allowNull: false,
         },
-        maximo_participantes:{
+        id_time_a:{
+            type: DataTypes.INTEGER(2),
+            allowNull: false,
+            primaryKey: true,
+        },
+        id_time_b:{
+            type: DataTypes.INTEGER(2),
+            allowNull: false,
+            primaryKey: true,
+        },
+        resultado_a:{
             type: DataTypes.INTEGER(2),
             allowNull: false,
         },
-        numero_participantes:{
+        resultado_b:{
             type: DataTypes.INTEGER(2),
             allowNull: false,
         },
-        cpf_capitao:{
-            type: DataTypes.STRING(11),
-            allowNull: false,
-        },
-        celular_capitao:{
-            type: DataTypes.STRING(10),
-            allowNull: false,
-        },
-        participantes_cadastrados: {
-            type: DataTypes.STRING(500),
-            allowNull: true,
-          },
-        grupo: {
-            type: DataTypes.STRING(10),
+        encerrado:{
+            type: DataTypes.BOOLEAN(1),
             allowNull: true,
         },
-        data_cadastro:{
-            type: DataTypes.DATE(11),
+        modalidade:{
+            type: DataTypes.INTEGER(2),
+            allowNull: false,
+        },
+        etapa_jogo:{
+            type: DataTypes.STRING(3),
             allowNull: true,
         },
         ult_atualizacao:{
@@ -52,7 +50,7 @@ module.exports = function(sequelize, DataTypes){
             allowNull: true,
         },
     },{
-        tableName: 'equipes_juergs'
+        tableName: 'jogos_juergs'
     }
     )
 }
