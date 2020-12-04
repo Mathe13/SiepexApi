@@ -7,6 +7,12 @@ const express = require('express'),
   geral_rotas = require("./src/eventos/geral.js"),
   comissao_rotas = require("./src/comissao/comissao_routes"),
   trabalhos_rotas = require("./src/eventos/trabalhos.js"),
+  cadastro_juergs_rotas = require("./src/eventos/cadastraJuergs.js"),
+  obtem_participante_rotas = require("./src/eventos/obterParticipante.js"),
+  obtem_modalidades_rotas = require("./src/eventos/obterModalidades.js"),
+  cadastra_equipe_rotas = require("./src/eventos/cadastraEquipe.js"),
+  obtem_equipes_rotas = require("./src/eventos/obterEquipes.js"),
+  atualiza_participante_rotas = require("./src/eventos/atualizaParticipante.js"),
   bodyParser = require('body-parser');
 
 const app = express();
@@ -30,13 +36,18 @@ app.use(bodyParser.raw({
   type: '*/*'
 }));
 
-
 app.use('/participante', participante_rotas);
 app.use('/visitas', visitas_rotas);
 app.use('/minicursos', minicursos_rotas);
 app.use('/geral', geral_rotas);
 app.use('/comissao', comissao_rotas);
 app.use("/trabalhos", trabalhos_rotas);
+app.use("/cadastroJuergs", cadastro_juergs_rotas);
+app.use("/obtemParticipante", obtem_participante_rotas);
+app.use("/modalidades", obtem_modalidades_rotas);
+app.use("/equipe", cadastra_equipe_rotas);
+app.use('/obtemEquipes', obtem_equipes_rotas);
+app.use('/atualizaParticipante', atualiza_participante_rotas);
 app.get('/', function (req, res) {
   res.json("the server is on")
 })
