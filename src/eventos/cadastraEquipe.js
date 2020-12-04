@@ -3,19 +3,12 @@ const express = require('express'),
 const {
     equipes_juergs,
     cadastro_juergs,
-<<<<<<< HEAD
     participantes_rustica,
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
 } = require('../../models');
 const { json } = require('body-parser');
 
 router.put('/cadastra', async (req, res) => {
     var equipe = await getEquipe(req.body['nome_equipe'], req.body['nome_modalidade']);
-<<<<<<< HEAD
-
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
     if (equipe.count != 0) {
         //criarEquipe(req, res);
         res.json({
@@ -42,7 +35,6 @@ router.put('/cadastra', async (req, res) => {
     return;
 })
 
-<<<<<<< HEAD
 router.put('/cadastraRustica', async (req, res) => {
     nome = req.body['nome'];
     celular = req.body['celular'];
@@ -111,8 +103,6 @@ router.put('/updateRustica', async (req, res) => {
     }
 });
 
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
 router.put('/entra', async (req, res) => {
     equipeId = parseInt(req.body['equipe_id']);
     //userName = req['userName'];
@@ -144,10 +134,6 @@ router.put('/entra', async (req, res) => {
                     updatedEquipe['dataValues']['participantes_cadastrados'] = userCpfs; // adiciona os cpfs ao resultado
                     updatedEquipe['dataValues']['nomes_participantes'] = [];
                     updatedEquipe['dataValues']['nomes_participantes'] = await pegarNomes(userCpfs);
-<<<<<<< HEAD
-=======
-                    console.log(updatedEquipe);
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
                     res.json({
                         status: 'sucesso',
                         data: updatedEquipe,
@@ -218,10 +204,6 @@ router.put('/changeCaptain', async (req, res) => {
 })
 
 router.put('/remove', async (req, res) => {
-<<<<<<< HEAD
-=======
-    console.log('Removendo Equipe')
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
     try {
         id = parseInt(req.body['equipe_id'])
         // Remove a Equipe da lista de Equipes de cada participante.
@@ -262,7 +244,6 @@ router.put('/remove', async (req, res) => {
         res.json({ status: 'erro' });
         return;
     }
-<<<<<<< HEAD
 })
 
 router.put('/excludeMembers', async (req, res) => {
@@ -281,29 +262,6 @@ router.put('/excludeMembers', async (req, res) => {
                 await cadastro_juergs.update({
                     'minhas_equipes': users[i].minhas_equipes.replace(id + ';', ''),
                 }, {
-=======
-    console.log('Aqui3');
-})
-
-router.put('/excludeMembers', async (req, res) => {
-    try{
-        id = parseInt(req.body['equipe_id']);
-        userCpfs = JSON.parse(req.body['members_cpf']);
-        
-        console.log(userCpfs);
-        // Apagar Equipe da lista de Equipe dos Membros excluidos.
-        await cadastro_juergs.findAll({
-            where:{
-                cpf:userCpfs
-            },
-            attributes:['cpf', 'minhas_equipes']
-        }).then(async (users) => {
-            console.log(users);
-            for(i = 0; i < users.length; i ++){
-                await cadastro_juergs.update({
-                    'minhas_equipes':users[i].minhas_equipes.replace(id + ';', ''),
-                },{
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
                     where: {
                         cpf: users[i].cpf,
                     }
@@ -312,46 +270,28 @@ router.put('/excludeMembers', async (req, res) => {
 
         }).catch((e) => {
             res.json({
-<<<<<<< HEAD
                 status: 'erro'
-=======
-                status:'erro'
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
             });
             return;
         });
         // Apagar cpf dos membros excluidos da lista de participantes da equipe e mudar número de participantes na equipe.
-<<<<<<< HEAD
         await equipes_juergs.findByPk(id, {
             attributes: ['numero_participantes', 'participantes_cadastrados'],
         }).then(async (equipe) => {
             newMemberList = equipe.participantes_cadastrados;
             for (i = 0; i < userCpfs.length; i++) {
-=======
-        await equipes_juergs.findByPk(id,{
-            attributes: ['numero_participantes', 'participantes_cadastrados'],
-        }).then( async (equipe) => {
-            newMemberList = equipe.participantes_cadastrados;
-            for(i = 0; i < userCpfs.length; i++){
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
                 newMemberList = newMemberList.replace(userCpfs[i] + ';', '');
             }
             await equipes_juergs.update({
                 'participantes_cadastrados': newMemberList,
                 'numero_participantes': equipe.numero_participantes - userCpfs.length,
-<<<<<<< HEAD
             }, {
                 where: {
-=======
-            },{
-                where:{
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
                     id: id,
                 }
             })
         })
         res.json({
-<<<<<<< HEAD
             status: 'sucesso',
         });
         return;
@@ -359,15 +299,6 @@ router.put('/excludeMembers', async (req, res) => {
         console.log('Erro ao excluir membros: ' + e.toString())
         res.json({
             status: 'erro'
-=======
-            status:'sucesso',
-        });
-        return;
-    }catch(e){
-        console.log('Erro ao excluir membros: ' + e.toString())
-        res.json({
-            status:'erro'
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
         });
         return;
     }
@@ -390,7 +321,6 @@ function pegarNomes(userCpfs) {
     })
 }
 
-<<<<<<< HEAD
 // Pega o número de participantes da rústica
 async function countRustica() {
     result = await equipes_juergs.findAndCountAll({
@@ -401,8 +331,6 @@ async function countRustica() {
 
 
 
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
 // Confere já existe uma equipe com este nome.
 async function getEquipe(equipe, modalidade) {
     return new Promise(function (resolve, reject) {
@@ -439,11 +367,7 @@ async function criarEquipe(req, res) {
             })
 
         }).then((otherResult) => {
-<<<<<<< HEAD
             result['dataValues']['nomes_participantes'] = ['Teste Teste'];
-=======
-            result['dataValues']['nomes_participantes'] = ['Marcos Cunha'];
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
             userCpfs = result['dataValues']['participantes_cadastrados'].split(';');
             userCpfs = userCpfs.slice(0, userCpfs.length - 1); // Coloca os cpf em uma lista de string
             result['dataValues']['participantes_cadastrados'] = userCpfs; // adiciona os cpfs ao resultado

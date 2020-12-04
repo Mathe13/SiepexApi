@@ -3,25 +3,18 @@ const express = require('express'),
 const {
     equipes_juergs,
     cadastro_juergs,
-<<<<<<< HEAD
     participantes_rustica,
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
 } = require('../../models');
 
 router.put('/', async (req, res) => {
     // decide qual função usar com base no parametro passado em req
     if ('id_modalidade' in req.body) {
         idModalidade = parseInt(req.body['id_modalidade']);
-<<<<<<< HEAD
         if('fase_atual' in req.body){
             faseAtual = (req.body['fase_atual'] != 'null') ? (parseInt(req.body['fase_atual'])) : '';
             equipes = await pegarTodasEquipesPorFase(idModalidade, faseAtual);
         }else
             equipes = await pegarTodasEquipesPorModalidade(idModalidade);
-=======
-        equipes = await pegarTodasEquipesPorModalidade(idModalidade);
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
         res.json({
             data: equipes.rows,
             count: equipes.count,
@@ -35,7 +28,6 @@ router.put('/', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 router.get('/rustica', async (req, res) => {
     participantes = await participantes_rustica.findAll({
         order: [
@@ -47,8 +39,6 @@ router.get('/rustica', async (req, res) => {
     });
 });
 
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
 async function pegarTodasEquipesPorModalidade(idModalidade) {
     return new Promise(function (resolve, reject) {
         equipes_juergs.findAndCountAll({
@@ -64,7 +54,6 @@ async function pegarTodasEquipesPorModalidade(idModalidade) {
                 userCpfs = userCpfs.slice(0, userCpfs.length - 1); // Coloca os cpf em uma lista de string
                 result.rows[i]['dataValues']['participantes_cadastrados'] = userCpfs; // adiciona os cpfs ao resultado
                 result.rows[i]['dataValues']['nomes_participantes'] = [];
-<<<<<<< HEAD
                 // TODO: Otimizar esta parte. -M
                 result.rows[i]['dataValues']['nomes_participantes'] = await pegarNomes(userCpfs);
             }
@@ -92,8 +81,6 @@ async function pegarTodasEquipesPorFase(idModalidade, faseAtual) {
                 result.rows[i]['dataValues']['participantes_cadastrados'] = userCpfs; // adiciona os cpfs ao resultado
                 result.rows[i]['dataValues']['nomes_participantes'] = [];
                 // TODO: Otimizar esta parte. -M
-=======
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
                 result.rows[i]['dataValues']['nomes_participantes'] = await pegarNomes(userCpfs);
             }
             resolve(result);
@@ -103,16 +90,11 @@ async function pegarTodasEquipesPorFase(idModalidade, faseAtual) {
 
 // Função para pegar todas as equipes de um dado usuario
 async function pegarTodasEquipesPorUsuario(userCpf) {
-<<<<<<< HEAD
     console.log('Pegando Equipes por usuario');
     return new Promise(function (resolve, reject) {
         // Pega as IDs das minhas equipes
         console.log("CPF: ")
         console.log(userCpf)
-=======
-    return new Promise(function (resolve, reject) {
-        // Pega as IDs das minhas equipes
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
         cadastro_juergs.findAll({
             where: {
                 cpf: userCpf,
@@ -121,12 +103,8 @@ async function pegarTodasEquipesPorUsuario(userCpf) {
             equipesIds = user[0]['dataValues']['minhas_equipes'].split(';')
             equipesIds = equipesIds.slice(0, equipesIds.length - 1) // O ultimo elemento é vazio
             equipesIds = equipesIds.map(Number); // Converte um array de String para um array de Numbers
-<<<<<<< HEAD
             console.log("IDs: ");
             console.log(equipesIds);
-=======
-
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
             equipes_juergs.findAndCountAll({
                 where: {
                     id: equipesIds, // Passo todas as IDs
@@ -148,29 +126,6 @@ async function pegarTodasEquipesPorUsuario(userCpf) {
     })
 }
 
-<<<<<<< HEAD
-=======
-// Dado os cpfs dos users, retorna uma lista com os nomes dos mesmos.
-// function pegarNomes(userCpfs) {
-//     console.log('CPF dos usurarios: ' + userCpfs.toString())
-//     return new Promise(function (resolve, reject) {
-//         var nomes_participantes = [];
-//         cadastro_juergs.findAll({ // pega os nomes de todos participantes da equipe
-//             attributes: ['nome'],
-//             where: {
-//                 cpf: userCpfs,
-//             }
-//         }).then((result2) => {
-//             for (var j = result2.length - 1; j >= 0; j--) { // adiciona cada nome ao resultado
-//                 console.log('Nome do usuario: ' + result2[j]['dataValues']['nome'].toString())
-//                 nomes_participantes.push(result2[j]['dataValues']['nome']);
-//             }
-//             resolve(nomes_participantes);
-//         });
-//     })
-// }
-
->>>>>>> dd5267254da60755bf648081d94b7f622ef2270a
 async function pegarNomes(userCpfs) {
     // Faz desta forma (pega um nome por vez) para que os nomes estejam na mesma ordem dos cpfs.
     //console.log('CPF dos usurarios: ' + userCpfs.toString())
