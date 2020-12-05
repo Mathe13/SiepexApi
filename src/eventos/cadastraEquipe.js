@@ -9,7 +9,6 @@ const { json } = require('body-parser');
 
 router.put('/cadastra', async (req, res) => {
     var equipe = await getEquipe(req.body['nome_equipe'], req.body['nome_modalidade']);
-
     if (equipe.count != 0) {
         //criarEquipe(req, res);
         res.json({
